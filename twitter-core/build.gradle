@@ -65,6 +65,7 @@ dependencies {
     implementation dependency.retrofitGsonConverter
     api dependency.gson
     api dependency.okHttp
+    api dependency.okHttpInterceptor
 
     androidTestImplementation dependency.mockito
     androidTestImplementation dependency.dexmakerMockito

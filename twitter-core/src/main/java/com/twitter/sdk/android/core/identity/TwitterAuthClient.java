@@ -95,8 +95,9 @@ public class TwitterAuthClient {
 
     private void handleAuthorize(Activity activity, Callback<TwitterSession> callback) {
         final CallbackWrapper callbackWrapper = new CallbackWrapper(sessionManager, callback);
-        if (!authorizeUsingSSO(activity, callbackWrapper)
-                && !authorizeUsingOAuth(activity, callbackWrapper)) {
+//        if (!authorizeUsingSSO(activity, callbackWrapper)
+//                && !authorizeUsingOAuth(activity, callbackWrapper)) {
+        if (!authorizeUsingOAuth(activity, callbackWrapper)) {
             callbackWrapper.failure(new TwitterAuthException("Authorize failed."));
         }
     }
