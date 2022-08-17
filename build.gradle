@@ -15,7 +15,7 @@
  *
  */
 
-apply from: rootProject.file('dependencies.gradle')
+apply from: rootProject.file('twitter-kit-android/dependencies.gradle')
 
 subprojects { Project subproject ->
     buildscript {

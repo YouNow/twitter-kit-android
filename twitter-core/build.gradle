@@ -18,13 +18,13 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdkVersion rootProject.findProject("twitter-kit-android").compileSdkVersion
+    buildToolsVersion rootProject.findProject("twitter-kit-android").buildToolsVersion
 
     defaultConfig {
         versionCode 1
         versionName version
-        minSdkVersion rootProject.minSdkVersion
+        minSdkVersion rootProject.findProject("twitter-kit-android").minSdkVersion
         consumerProguardFiles 'proguard.txt'
     }
 
@@ -35,6 +35,8 @@ android {
             buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
             buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
 
+            buildConfigField "String", "VERSION_NAME", "\"${project.property('version')}\""
+
             testCoverageEnabled enableTestCodeCoverage
         }
 
@@ -43,6 +45,8 @@ android {
             buildConfigField "String", "ARTIFACT_ID", "\"${pom_artifact_id}\""
             buildConfigField "String", "BUILD_NUMBER", "\"${buildNumber}\""
             buildConfigField "long", "BUILD_TIME", "${System.currentTimeMillis()}L"
+
+            buildConfigField "String", "VERSION_NAME", "\"${project.property('version')}\""
         }
     }
 
@@ -51,8 +55,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility rootProject.sourceCompatibilityVersion
-        targetCompatibility rootProject.targetCompatibilityVersion
+        sourceCompatibility rootProject.findProject("twitter-kit-android").sourceCompatibilityVersion
+        targetCompatibility rootProject.findProject("twitter-kit-android").targetCompatibilityVersion
     }
 }
 
@@ -62,15 +66,15 @@ dependencies {
     api dependency.gson
     api dependency.okHttp
 
-    androidTestCompile dependency.mockito
-    androidTestCompile dependency.dexmakerMockito
+    androidTestImplementation dependency.mockito
+    androidTestImplementation dependency.dexmakerMockito
 
-    testCompile dependency.mockito
-    testCompile dependency.junit
-    testCompile dependency.retrofitMock
-    testCompile(dependency.robolectric) {
+    testImplementation dependency.mockito
+    testImplementation dependency.junit
+    testImplementation dependency.retrofitMock
+    testImplementation(dependency.robolectric) {
         exclude group: 'commons-logging', module: 'commons-logging'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
     }
-    testCompile dependency.equalsVerifier
+    testImplementation dependency.equalsVerifier
 }
