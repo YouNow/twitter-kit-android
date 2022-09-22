@@ -43,7 +43,7 @@ public class TweetComposer {
     static volatile TweetComposer instance;
     private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
     private static final String MIME_TYPE_JPEG = "image/jpeg";
-    private static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
+    public static final String TWITTER_PACKAGE_NAME = "com.twitter.android";
     private static final String WEB_INTENT = "https://twitter.com/intent/tweet?text=%s&url=%s";
 
     SessionManager<TwitterSession> sessionManager;
@@ -65,10 +65,6 @@ public class TweetComposer {
         sessionManager = TwitterCore.getInstance().getSessionManager();
         guestSessionProvider = TwitterCore.getInstance().getGuestSessionProvider();
         context = Twitter.getInstance().getContext(getIdentifier());
-    }
-
-    public String getVersion() {
-        return BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
     }
 
     public String getIdentifier() {

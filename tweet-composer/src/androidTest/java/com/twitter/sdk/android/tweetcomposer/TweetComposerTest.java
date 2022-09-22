@@ -50,11 +50,6 @@ public class TweetComposerTest extends AndroidTestCase {
         super.tearDown();
     }
 
-    public void testGetVersion() {
-        final String version = BuildConfig.VERSION_NAME + "." + BuildConfig.BUILD_NUMBER;
-        assertEquals(version, tweetComposer.getVersion());
-    }
-
     public void testGetIdentifier() {
         final String identifier = BuildConfig.GROUP + ":" + BuildConfig.ARTIFACT_ID;
         assertEquals(identifier, tweetComposer.getIdentifier());
