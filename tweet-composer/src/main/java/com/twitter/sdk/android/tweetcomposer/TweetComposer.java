@@ -79,6 +79,7 @@ public class TweetComposer {
         private String text;
         private URL url;
         private Uri imageUri;
+        private String mimeType = MIME_TYPE_JPEG;
 
         /**
          * Initializes a new {@link com.twitter.sdk.android.tweetcomposer.TweetComposer.Builder}
@@ -106,21 +107,11 @@ public class TweetComposer {
             return this;
         }
 
-        /**
-         * Sets URL for Tweet Intent, no length validation is performed
-         */
-        public Builder url(URL url) {
-            if (url == null) {
-                throw new IllegalArgumentException("url must not be null.");
-            }
-
-            if (this.url != null) {
-                throw new IllegalStateException("url already set.");
-            }
-            this.url = url;
-
+        public Builder imageMimeType(String mimeType) {
+            this.mimeType = mimeType;
             return this;
         }
+
         /**
          * Sets Image {@link android.net.Uri} for the Tweet. Only valid if the Twitter App is
          * installed.
@@ -140,7 +131,24 @@ public class TweetComposer {
         }
 
         /**
+         * Sets URL for Tweet Intent, no length validation is performed
+         */
+        public Builder url(URL url) {
+            if (url == null) {
+                throw new IllegalArgumentException("url must not be null.");
+            }
+
+            if (this.url != null) {
+                throw new IllegalStateException("url already set.");
+            }
+            this.url = url;
+
+            return this;
+        }
+
+        /**
          * Creates {@link android.content.Intent} based on data in {@link com.twitter.sdk.android.tweetcomposer.TweetComposer.Builder}
+         *
          * @return an Intent to the Twitter for Android or a web intent.
          */
         public Intent createIntent() {
@@ -174,7 +182,7 @@ public class TweetComposer {
 
             if (imageUri != null) {
                 intent.putExtra(Intent.EXTRA_STREAM, imageUri);
-                intent.setType(MIME_TYPE_JPEG);
+                intent.setType(mimeType);
             }
 
             final PackageManager packManager = context.getPackageManager();
