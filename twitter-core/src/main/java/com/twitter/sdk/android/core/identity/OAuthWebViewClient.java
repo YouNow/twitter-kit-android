@@ -17,9 +17,12 @@
 
 package com.twitter.sdk.android.core.identity;
 
+import android.annotation.TargetApi;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -67,10 +70,33 @@ class OAuthWebViewClient extends WebViewClient {
     }
 
     @Override
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        if (request.getUrl().toString().startsWith(completeUrl)) {
+            final TreeMap<String, String> params =
+                    UrlUtils.getQueryParams(URI.create(request.getUrl().toString()), false);
+            final Bundle bundle = new Bundle(params.size());
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                bundle.putString(entry.getKey(), entry.getValue());
+            }
+            listener.onSuccess(bundle);
+            return true;
+        }
+        return super.shouldOverrideUrlLoading(view, request);
+    }
+
+    @Override
     public void onReceivedError(WebView view, int errorCode,
-            String description, String failingUrl) {
+                                String description, String failingUrl) {
         super.onReceivedError(view, errorCode, description, failingUrl);
         listener.onError(new WebViewException(errorCode, description, failingUrl));
+    }
+
+    @TargetApi(android.os.Build.VERSION_CODES.M)
+    @Override
+    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+        super.onReceivedError(view, request, error);
+        // Redirect to deprecated method, so you can use it in all SDK versions
+        onReceivedError(view, error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
     }
 
     @Override
