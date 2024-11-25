@@ -22,8 +22,6 @@ android {
     buildToolsVersion rootProject.findProject("twitter-kit-android").buildToolsVersion
 
     defaultConfig {
-        versionCode 1
-        versionName version
         minSdkVersion rootProject.findProject("twitter-kit-android").minSdkVersion
         consumerProguardFiles 'proguard.txt'
     }
@@ -58,6 +56,7 @@ android {
         sourceCompatibility rootProject.findProject("twitter-kit-android").sourceCompatibilityVersion
         targetCompatibility rootProject.findProject("twitter-kit-android").targetCompatibilityVersion
     }
+    namespace 'com.twitter.sdk.android.core'
 }
 
 dependencies {
